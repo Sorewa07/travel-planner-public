@@ -1,0 +1,1262 @@
+/* ==========================================================================
+   0. Webフォント & デザイントークン（配色・書体）
+   「旅の余白」トーン：落ち着いたティール×くすみゴールドの配色に、
+   見出しはNoto Serif JP、本文はNoto Sans JPを使用
+   ========================================================================== */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;600;700&display=swap");
+
+:root {
+  /* システムのダークモード設定に関わらず、常にライトテーマで
+     フォーム部品（select/input等）を表示する */
+  color-scheme: light;
+
+  /* --- ベースカラー --- */
+  --color-bg: #f5f6f4;
+  --color-surface: #ffffff;
+  --color-text: #453d36;
+  --color-text-muted: #8a7d6f;
+  --color-border: #e3e1dc;
+
+  /* --- アクセント（ティール） --- */
+  --color-accent: #3d6b72;
+  --color-accent-deep: #2f545c;
+  --color-accent-soft: #e3eeec;
+
+  /* --- アクセント（くすみゴールド：予算・強調用） --- */
+  --color-gold: #c7a467;
+  --color-gold-soft: #f5eedd;
+
+  /* --- アクセント（ブラウン：ログアウトなど中立寄りの操作用） --- */
+  --color-brown: #8b6f52;
+  --color-brown-soft: #efe7dc;
+
+  /* --- セマンティックカラー --- */
+  --color-danger: #b3463f;
+  --color-danger-soft: #f8ece9;
+  --color-danger-border: #e3bdb6;
+  --color-success: #4c7a5b;
+
+  /* app-div-2の背景色を参照するための変数。デスクトップ表示ではsurface(白)、
+     モバイル表示ではbg(グレー)にmedia query側で切り替える。
+     カード内の白背景の要素（sticky-headerなど）は、直接surfaceを指定せず
+     この変数を参照することで、表示モードに応じて自動的に馴染むようにする */
+  --color-app-bg: var(--color-surface);
+
+  /* --- 書体 --- */
+  --font-sans: "Noto Sans JP", "Hiragino Sans", sans-serif;
+  --font-serif: "Noto Serif JP", "Hiragino Mincho ProN", serif;
+}
+
+/* ==========================================================================
+   1. 全体共通の初期設定・ベーススタイル
+   ========================================================================== */
+.app-div {
+  background-color: var(--color-bg);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-sans);
+  padding: 20px;
+  box-sizing: border-box;
+  /* #root 等の親要素からtext-align: centerが継承されるのを防ぐ */
+  text-align: left;
+}
+
+.app-div input,
+.app-div select,
+.app-div textarea {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+.app-div-2 {
+  width: 100%;
+  max-width: 375px;
+  height: 670px;
+  background-color: var(--color-app-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px -12px rgba(47, 84, 92, 0.28);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-sizing: border-box;
+  /* 画面によって中身が670pxを超える場合は、カード自体をスクロール可能にする
+     （タイムスケジュール一覧のように内部に独自のスクロール領域を持つ画面は
+     そちらが優先的にスクロールし、日付バナーのsticky指定もここで機能する） */
+  overflow-y: auto;
+}
+
+.app-div-2 input:focus,
+.app-div-2 select:focus,
+.app-div-2 textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+}
+
+/* --- スマートフォン実機で開いた場合：PC上のモックフレーム表示をやめ、
+   画面いっぱいに自然に収まる「実アプリ」の見た目にする --- */
+@media (max-width: 480px) {
+  .app-div {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .app-div-2 {
+    max-width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    /* PC表示ではapp-divの温かみのあるグレーが背景として見えるが、
+       スマホではapp-div-2しか見えなくなるため、ここに背景色を持たせて
+       「旅の余白」の雰囲気を保つ。
+       --color-app-bg も合わせて上書きすることで、sticky-headerなど
+       この変数を参照している要素も自動的に馴染む */
+    background-color: var(--color-bg);
+    --color-app-bg: var(--color-bg);
+  }
+}
+
+.app-div-3 {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 24px;
+  background-color: var(--color-gold-soft);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.app-div-3--inline {
+  /* タイムスケジュール一覧画面内では、親要素(.schedule-list-div-4)の
+     gapで間隔を取るため、自身のmargin指定は不要にする */
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.app-title-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.app-title-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.app-title-sub {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+.app-h1 {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  color: var(--color-accent-deep);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin: 0px;
+}
+
+/* ==========================================================================
+   2. ログイン画面 ＆ 共通フォーム部品
+   ========================================================================== */
+.login-div {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  /* flexアイテムはデフォルトでmin-height: autoとなり、中身の高さ分だけ
+     伸びてしまうため、明示的に0にして「割り当てられた領域内に収まる」
+     ようにする（内部の.schedule-list-div-4などが正しくスクロールする
+     ようになる） */
+  min-height: 0;
+}
+
+.login-h2 {
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 8px;
+  margin-bottom: 14px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.login-div-2 {
+  display: flex;
+  align-items: center;
+}
+
+.login-label {
+  width: 80px;
+  font-size: 14px;
+}
+
+.login-input-wrap {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 0 10px;
+  background-color: var(--color-surface);
+}
+
+.login-input-wrap svg {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.login-input-wrap:focus-within {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+}
+
+.login-input {
+  flex-grow: 1;
+  padding: 9px 0;
+  border: none;
+  background: none;
+}
+
+.login-div-3 {
+  display: flex;
+  align-items: center;
+}
+
+.login-input-2 {
+  flex-grow: 1;
+  padding: 9px 0;
+  border: none;
+  background: none;
+}
+
+.login-button {
+  flex-shrink: 0;
+  padding: 4px 8px;
+  font-size: 11px;
+  background-color: var(--color-bg);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login-div-4 {
+  color: var(--color-danger);
+  font-size: 12px;
+  margin-top: 10px;
+  background-color: var(--color-danger-soft);
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid var(--color-danger-soft);
+  text-align: left;
+}
+
+.login-button-2 {
+  margin-top: 30px;
+  background-color: var(--color-accent);
+  color: var(--color-surface);
+  border: 1px solid var(--color-accent);
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.login-button-2:hover {
+  background-color: var(--color-accent-deep);
+  border-color: var(--color-accent-deep);
+}
+
+/* ==========================================================================
+   3. 旅行先一覧画面（ドラッグ＆ドロップ含む）
+   ========================================================================== */
+.travel-list-h2 {
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 8px;
+  margin: 0 0 14px 0;
+}
+
+.travel-list-div {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.travel-list-button {
+  flex: 1;
+  background-color: var(--color-accent-soft);
+  color: var(--color-text);
+  border: 1px solid var(--color-accent);
+  padding: 8px 4px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.travel-list-div-2 {
+  flex-grow: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 188px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.travel-list-div-2::-webkit-scrollbar,
+.user-list-div-2::-webkit-scrollbar {
+  width: 5px;
+}
+
+.travel-list-div-2::-webkit-scrollbar-track,
+.user-list-div-2::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.travel-list-div-2::-webkit-scrollbar-thumb,
+.user-list-div-2::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 10px;
+}
+
+.travel-list-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+.travel-list-tr {
+  background-color: var(--color-bg);
+}
+
+.travel-list-th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: var(--color-bg);
+  padding: 4px 6px;
+  width: 28px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.travel-list-th-2 {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: var(--color-bg);
+  padding: 4px 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.travel-list-th-3 {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: var(--color-bg);
+  padding: 4px 6px;
+  width: 110px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.travel-list-th-4 {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: var(--color-bg);
+  padding: 4px 6px;
+  width: 28px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.travel-row {
+  border-bottom: 1px solid var(--color-border);
+  cursor: grab;
+}
+
+.travel-row--dragging {
+  background-color: var(--color-bg);
+}
+
+.travel-list-td {
+  background-color: var(--color-surface);
+  padding: 12px 6px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.travel-list-el {
+  background-color: var(--color-surface);
+  padding: 12px 6px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-accent);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.travel-list-el svg,
+.user-list-el svg {
+  margin-right: 6px;
+  vertical-align: -2px;
+}
+
+.travel-list-td-2 {
+  background-color: var(--color-surface);
+  padding: 12px 6px;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 11px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.travel-list-button-2 {
+  background-color: transparent;
+  color: #c9c4bc;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  display: inline-flex;
+}
+
+.travel-list-button-2:hover {
+  color: var(--color-danger);
+}
+
+.travel-list-td-3 {
+  padding: 30px 10px;
+  color: var(--color-text-muted);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.travel-list-div-3 {
+  margin-top: auto;
+  padding-top: 15px;
+}
+
+.travel-list-div-4 {
+  border: 1px solid var(--color-border);
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 13px;
+  margin-bottom: 15px;
+  background-color: var(--color-bg);
+}
+
+.travel-list-span {
+  font-weight: bold;
+}
+
+.travel-list-span-2 {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.travel-list-button-3 {
+  width: 100%;
+  background-color: var(--color-surface);
+  color: var(--color-brown);
+  border: 1px solid var(--color-border);
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+/* ==========================================================================
+   4. 旅行先 登録・編集画面
+   ========================================================================= */
+.travel-create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.travel-create-label {
+  width: 70px;
+  font-size: 14px;
+}
+
+.travel-create-div {
+  color: var(--color-danger);
+  font-size: 12px;
+  background-color: var(--color-danger-soft);
+  padding: 8px;
+  border-radius: 4px;
+  text-align: left;
+}
+
+.travel-create-button {
+  background-color: var(--color-accent);
+  color: var(--color-surface);
+  border: 1px solid var(--color-accent);
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.travel-create-button:hover {
+  background-color: var(--color-accent-deep);
+  border-color: var(--color-accent-deep);
+}
+
+.travel-create-button-2 {
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.travel-edit-div {
+  color: var(--color-danger);
+  font-size: 12px;
+  background-color: var(--color-danger-soft);
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid var(--color-danger-soft);
+  text-align: left;
+}
+
+/* ==========================================================================
+   5. ユーザー管理画面（一覧・登録・編集）
+   ========================================================================= */
+.user-list-div {
+  margin-top: 20px;
+}
+
+.user-list-button {
+  width: 100%;
+  background-color: var(--color-accent);
+  color: var(--color-surface);
+  border: 1px solid var(--color-accent);
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.user-list-button:hover {
+  background-color: var(--color-accent-deep);
+  border-color: var(--color-accent-deep);
+}
+
+.user-list-div-2 {
+  margin: 20px 0;
+  flex-grow: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.user-list-th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: var(--color-bg);
+  padding: 4px 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.user-list-tr {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.user-list-el {
+  background-color: var(--color-surface);
+  padding: 12px 6px;
+  color: var(--color-accent);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.user-list-el--admin {
+  color: var(--color-text-muted);
+  cursor: default;
+}
+
+.user-list-td {
+  background-color: var(--color-surface);
+  padding: 12px 6px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.user-list-td-2 {
+  padding: 30px 10px;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.user-list-button-2 {
+  width: 100%;
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.user-create-button {
+  margin-top: 20px;
+  background-color: var(--color-accent);
+  color: var(--color-surface);
+  border: 1px solid var(--color-accent);
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.user-create-button:hover {
+  background-color: var(--color-accent-deep);
+  border-color: var(--color-accent-deep);
+}
+
+.user-create-button-2 {
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.user-edit-div {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin: 5px 0;
+}
+
+.user-edit-span {
+  color: var(--color-accent);
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.user-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+/* ==========================================================================
+   6. タイムスケジュール一覧画面（前半）
+   ========================================================================= */
+.schedule-list-div {
+  margin-bottom: 10px;
+}
+
+.schedule-list-div-2 {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.schedule-list-span {
+  color: var(--color-accent);
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.schedule-list-div-3 {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.schedule-list-button {
+  width: 80px;
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  padding: 8px 4px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.schedule-list-div-4 {
+  flex-grow: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 20px;
+  /* スクロールバーを完全に消さず、目立たない細さ・色に抑える
+     （消してしまうと、続きがあることに気づきにくくなるため） */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.schedule-list-div-4::-webkit-scrollbar {
+  width: 5px;
+}
+
+.schedule-list-div-4::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.schedule-list-div-4::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 10px;
+}
+
+.schedule-list-div-14 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.schedule-list-label {
+  font-size: 13px;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.schedule-list-select {
+  flex-grow: 1;
+  padding: 6px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-size: 13px;
+  background-color: var(--color-surface);
+}
+
+.schedule-list-div-5 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.schedule-list-sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background-color: var(--color-app-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.schedule-list-div-7 {
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 6px;
+  padding: 12px 14px;
+  position: relative;
+  background-color: var(--color-surface);
+}
+.schedule-list-button-2 {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  background: none;
+  border: none;
+  color: #c9c4bc;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.schedule-list-el {
+  cursor: pointer;
+  padding: 2px;
+  margin-bottom: 6px;
+}
+
+.schedule-list-span-2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.schedule-list-span-2 svg {
+  color: var(--color-text-muted);
+}
+
+.schedule-list-div-8 {
+  font-size: 15px;
+  color: var(--color-text);
+  margin: 0 0 10px 0;
+  padding-left: 2px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.schedule-list-div-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.schedule-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: none;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.schedule-tag-gold {
+  background-color: var(--color-gold-soft);
+  color: var(--color-brown);
+}
+
+.schedule-tag-teal {
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent-deep);
+}
+
+.schedule-tag-empty {
+  background-color: transparent;
+  color: var(--color-text-muted);
+  border: 1px dashed var(--color-border);
+}
+
+.schedule-list-div-12 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-top: 8px;
+  border-top: 1px solid var(--color-border);
+  padding-top: 8px;
+}
+
+.schedule-list-editor {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.schedule-list-edit-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-accent);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.schedule-list-div-13 {
+  text-align: center;
+  padding: 40px 10px;
+  color: var(--color-text);
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: 30px;
+}
+
+/* ==========================================================================
+   7. タイムスケジュール 登録・編集画面
+   ========================================================================= */
+.schedule-create-h2 {
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 8px;
+}
+
+.schedule-create-span {
+  color: var(--color-accent);
+  font-weight: bold;
+}
+
+.schedule-create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.schedule-create-input {
+  flex-grow: 1;
+  padding: 6px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+}
+
+.schedule-create-select {
+  padding: 6px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+}
+
+.schedule-create-div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.schedule-create-textarea {
+  flex-grow: 1;
+  height: 60px;
+  padding: 6px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  resize: none;
+}
+
+.schedule-create-div-2 {
+  text-align: right;
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.schedule-create-div-3 {
+  color: var(--color-danger);
+  font-size: 12px;
+  background-color: var(--color-danger-soft);
+  padding: 6px;
+  border-radius: 4px;
+  text-align: left;
+}
+
+.schedule-create-button {
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.schedule-create-button-alt {
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent-deep);
+  border: 1px solid var(--color-accent);
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   8. モーダル ＆ ポップアップ（中央固定配置）
+   ========================================================================= */
+.travel-delete-modal-div {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  z-index: 1000;
+}
+
+.travel-delete-modal-div-2 {
+  width: 90%;
+  max-width: 300px;
+  min-height: 150px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.travel-delete-modal-div-3 {
+  text-align: center;
+  font-size: 14px;
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+.travel-delete-modal-div-4 {
+  display: flex;
+  gap: 15px;
+}
+
+.travel-delete-modal-button {
+  flex: 1;
+  padding: 8px;
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.modal-button-danger {
+  flex: 1;
+  padding: 8px;
+  background-color: var(--color-danger);
+  color: var(--color-surface);
+  border: 1px solid var(--color-danger);
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.modal-button-danger:hover {
+  background-color: #96352f;
+  border-color: #96352f;
+}
+
+.budget-modal-div {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.budget-modal-div-2 {
+  width: 90%;
+  max-width: 300px;
+  min-height: 180px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 12px 28px -8px rgba(47, 84, 92, 0.3);
+  box-sizing: border-box;
+}
+
+.budget-modal-div-3 {
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--color-text);
+}
+
+.budget-modal-p {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  text-align: center;
+  margin: 0px;
+}
+
+.budget-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 1;
+  justify-content: center;
+  margin-top: 5px;
+}
+
+.budget-modal-div-4 {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.budget-modal-input {
+  flex-grow: 1;
+  padding: 6px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: right;
+}
+
+.budget-modal-span {
+  font-size: 14px;
+}
+
+.budget-modal-div-5 {
+  color: var(--color-danger);
+  font-size: 11px;
+  text-align: left;
+  line-height: 1.3;
+}
+
+.budget-modal-div-6 {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.budget-modal-button {
+  flex: 1;
+  padding: 6px;
+  background-color: var(--color-accent);
+  color: var(--color-surface);
+  border: 1px solid var(--color-accent);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.budget-modal-button:hover {
+  background-color: var(--color-accent-deep);
+  border-color: var(--color-accent-deep);
+}
+
+.budget-modal-button-2 {
+  flex: 1;
+  padding: 6px;
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.schedule-delete-modal-div {
+  width: 90%;
+  max-width: 300px;
+  min-height: 150px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 12px 28px -8px rgba(47, 84, 92, 0.3);
+  box-sizing: border-box;
+}
+
+.schedule-delete-modal-button {
+  flex: 1;
+  padding: 8px;
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.items-modal-div {
+  width: 90%;
+  max-width: 320px;
+  min-height: 240px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 12px 28px -8px rgba(47, 84, 92, 0.3);
+  box-sizing: border-box;
+}
+
+.items-modal-p {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  text-align: center;
+  margin: 2px 0 8px 0;
+}
+
+.items-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 1;
+}
+
+.items-modal-textarea {
+  flex-grow: 1;
+  width: 100%;
+  min-height: 90px;
+  padding: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-size: 14px;
+  resize: none;
+  box-sizing: border-box;
+}
