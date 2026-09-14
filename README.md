@@ -7,9 +7,11 @@
   <kbd>
     <img src="./docs/screen-image_login.png" alt="ログイン画面" width="240px">
   </kbd>
+  &nbsp;&nbsp;
   <kbd>
     <img src="./docs/screen-image_travel.png" alt="旅行先一覧画面" width="240px">
   </kbd>
+  &nbsp;&nbsp;
   <kbd>
     <img src="./docs/screen-image_schedule.png" alt="タイムスケジュール一覧画面" width="240px">
   </kbd>
