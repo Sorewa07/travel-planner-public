@@ -21,7 +21,7 @@
 
 ## 🚀 アプリケーションURL
 
-- **本番公開URL：** `https://travel-planner-theta-liard.vercel.app/`
+- **本番公開URL：** <https://travel-planner-theta-liard.vercel.app/>
 - **テスト用管理者アカウント：**
   - **ID：** `admin001`
   - **パスワード：** `AdminPass123`
@@ -124,7 +124,7 @@ PCに以下のツールがインストールされていることを確認して
 
 ---
 
-### 2. 環境構築・起動の5ステップ
+### 2. 環境構築・起動の6ステップ
 
 #### ステップ①：リポジトリのクローン
 
@@ -175,7 +175,8 @@ _※ネットワーク名（`travel-planner-public_default`）は、お使いの
 
 #### ステップ⑤：バックエンド（Spring Boot）のセットアップ・起動
 
-データベースコンテナが立ち上がったら、APIサーバー（Java）を起動します。初回起動時に、JPA（Hibernate）の自動生成機能によって必要なテーブル構造（user, travel, schedule）および各カラムがローカルDB内に全自動で構築されます。
+データベースコンテナが立ち上がったら、APIサーバー（Java）を起動します。
+※初回起動時に、JPA（Hibernate）の自動生成機能によって必要なテーブル構造（user, travel, schedule）および各カラムがローカルDB内に全自動で構築されます。
 
 - **IDE（Eclipse / STS / IntelliJ）を使用する場合：**
   1. プロジェクトを Maven プロジェクトとしてインポートします。
