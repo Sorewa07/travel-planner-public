@@ -1,10 +1,12 @@
 # 🗺️ どこ行くん？ 何するん？
 
-### 〜 曜日も予算も、これ一つでスマートに整う「旅のしおり」アプリケーション 〜
+### 〜 予算も持ち物も、これ一つでスマートに整う「旅のしおり」アプリケーション 〜
 
 <!-- アプリケーションの雰囲気が伝わる画像 -->
 <p align="center">
-  <img src="https://unsplash.com" alt="アプリイメージ" width="600px">
+  <img src="./docs/screen-image_login.png" alt="ログイン画面" width="260px" style="margin-right: 10px;">
+  <img src="./docs/screen-image_travel.png" alt="旅行先一覧画面" width="260px" style="margin-right: 10px;">
+  <img src="./docs/screen-image_schedule.png" alt="タイムスケジュール一覧画面" width="260px">
 </p>
 
 ---
