@@ -22,6 +22,9 @@
 ## 🚀 アプリケーションURL
 
 - **本番公開URL：** <https://travel-planner-theta-liard.vercel.app/>
+
+  ※ `Ctrl` キー（Macは `Cmd` キー）を押しながらクリックすると、別タブで快適にご体験いただけます。
+
 - **テスト用管理者アカウント：**
   - **ID：** `admin001`
   - **パスワード：** `AdminPass123`
