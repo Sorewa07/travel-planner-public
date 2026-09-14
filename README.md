@@ -4,9 +4,9 @@
 
 <!-- アプリケーションの雰囲気が伝わる画像 -->
 <p align="center">
-  <img src="./docs/screen-image_login.png" alt="ログイン画面" width="260px" style="margin-right: 10px;">
-  <img src="./docs/screen-image_travel.png" alt="旅行先一覧画面" width="260px" style="margin-right: 10px;">
-  <img src="./docs/screen-image_schedule.png" alt="タイムスケジュール一覧画面" width="260px">
+  <img src="./docs/screen-image_login.png" alt="ログイン画面" width="220px" style="margin-right: 13px; border: 1px solid #AAA">
+  <img src="./docs/screen-image_travel.png" alt="旅行先一覧画面" width="220px" style="margin-right: 13px; border: 1px solid #AAA"">
+  <img src="./docs/screen-image_schedule.png" alt="タイムスケジュール一覧画面" width="220px" style=" border: 1px solid #AAA"">
 </p>
 
 ---
